@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  sqluser:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+
+  sqlcatalog:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+
+  mongonotificationsdata:
+    image: mongo
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Catalog.API/Dockerfile
+    depends_on:
+     - sqlcatalog
+
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: User.API/Dockerfile
+    depends_on:
+      - sqluser
+
+
+  notification.api:
+    image: ${DOCKER_REGISTRY-}notificationapi
+    build:
+      context: .
+      dockerfile: Notification.API/Dockerfile
+    depends_on:
+      - mongonotificationsdata
