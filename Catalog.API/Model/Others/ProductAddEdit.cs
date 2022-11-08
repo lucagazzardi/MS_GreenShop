@@ -1,17 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Catalog.API.Model
+﻿namespace Catalog.API.Model.Others
 {
-    public class Product
+    public class ProductAddEdit
     {
-        public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; set; }
         public string Pic { get; set; }
         public bool InCatalog { get; set; }
-
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
     }
 }

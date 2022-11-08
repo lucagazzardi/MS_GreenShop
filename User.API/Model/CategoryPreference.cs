@@ -6,9 +6,10 @@ namespace User.Model
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int CategoryId { get; set; }
 
+        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

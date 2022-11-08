@@ -15,7 +15,7 @@ namespace Notification.API.Data
                 _notificationContext = client.GetDatabase(settings.Value.DatabaseName);
 
                 // SEED
-                //PopulateIfEmpty();
+                PopulateIfEmpty();
             }
         }   
         

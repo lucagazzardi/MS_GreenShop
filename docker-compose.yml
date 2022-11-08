@@ -34,3 +34,16 @@ services:
       dockerfile: Notification.API/Dockerfile
     depends_on:
       - mongonotificationsdata
+
+  ocelot_identity_apigw:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: Ocelot_APIGw/Dockerfile
+
+  ocelot_catalog_apigw:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: Ocelot_APIGw/Dockerfile
+

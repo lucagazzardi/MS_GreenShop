@@ -41,14 +41,16 @@ namespace Catalog.API.Data
                     Name = "Margherita",
                     Description = "Una bellissima margherita",
                     Pic = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Fleur_en_Vanoise_%2821%29.JPG/1280px-Fleur_en_Vanoise_%2821%29.JPG",
-                    CategoryId = 1
+                    CategoryId = 1,
+                    InCatalog = true
                 },
                 new Product()
                 {
                     Name = "Pino",
                     Description = "Ottimo per gli alberi di Natale",
                     Pic = "https://www.picturethisai.com/wiki-image/1080/214256762847002624.jpeg",
-                    CategoryId = 2
+                    CategoryId = 2,
+                    InCatalog = true
                 }
             };
         }
