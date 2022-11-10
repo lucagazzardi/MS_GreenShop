@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Common;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Notification.API.Model;
 
@@ -30,12 +31,22 @@ namespace Notification.API.Data
             }
         }
 
+        public IMongoCollection<NotificationHistory> NotificationHistories
+        {
+            get
+            {
+                return _notificationContext.GetCollection<NotificationHistory>("NotificationHistory");
+            }
+        }
+
         public void PopulateIfEmpty()
         {
             if (!NotificationTemplates.Find(p => true).Any<NotificationTemplate>())
             {
                 NotificationTemplates.InsertMany(PopulateMockTemplates());
             }
+
+            _notificationContext.CreateCollection("NotificationHistory");
         }
 
         private List<NotificationTemplate> PopulateMockTemplates()
@@ -45,17 +56,10 @@ namespace Notification.API.Data
                 new NotificationTemplate()
                 {
                     Id = Guid.NewGuid(),
-                    Text = "A new product has been added in your followed category \"[1]\": \"[2]\"",
-                    NotificationType = NotificationType.NewProductInCategory.ToString(),
-                    Fields = new List<Fields>() { new Fields() { Key = 1, Value = "Category" }, new Fields() { Key = 2, Value = "Product" } }
+                    Text = "A new product has been added in your followed category \"[Category]\": \"[Product]\"",
+                    NotificationType = CommonElements.NotificationDictionary.NewProductInCategory.ToString()
                 }
             };
-        }
-
-        private async Task CreateCategoryNameIndex()
-        {
-            var indexNotificationType = Builders<NotificationTemplate>.IndexKeys.Ascending(indexKey => indexKey.NotificationType);
-            await NotificationTemplates.Indexes.CreateOneAsync(new CreateIndexModel<NotificationTemplate>(indexNotificationType));
         }
     }
 }

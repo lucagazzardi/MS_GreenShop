@@ -8,6 +8,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using User.API.Repository;
+using RabbitMQ.Client;
+using RabbitMQService.cs.Infrastructure.Interfaces;
+using RabbitMQService.cs.Infrastructure;
+using RabbitMQService.cs;
+using User.API.EventHandling;
+using RabbitMQService.cs.EventsCollection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +36,8 @@ builder.Services.AddIdentity<User.Model.User, IdentityRole>(opt =>
 .AddEntityFrameworkStores<UserContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+RegisterRabbitMQ();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -62,6 +71,12 @@ builder.Services.AddAuthorization();
 
 #endregion
 
+#region DI
+
+builder.Services.AddTransient<IUserService, UserService>();
+
+#endregion
+
 var app = builder.Build();
 
 CreateDbIfNotExists(app);
@@ -79,6 +94,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+ConfigureRabbitMQ(app);
 
 app.Run();
 
@@ -98,4 +115,49 @@ static void CreateDbIfNotExists(WebApplication app)
             logger.LogError(ex, "An error occurred creating the DB.");
         }
     }
+}
+
+void RegisterRabbitMQ()
+{
+    builder.Services.AddSingleton<IRabbitMQConnection>(sp =>
+    {
+
+        var factory = new ConnectionFactory()
+        {
+            HostName = builder.Configuration["EventBusConnection"],
+            DispatchConsumersAsync = true
+        };
+
+        if (!string.IsNullOrEmpty(builder.Configuration["EventBusUserName"]))
+        {
+            factory.UserName = builder.Configuration["EventBusUserName"];
+        }
+
+        if (!string.IsNullOrEmpty(builder.Configuration["EventBusPassword"]))
+        {
+            factory.Password = builder.Configuration["EventBusPassword"];
+        }
+
+        return new DefaultRabbitMQConnection(factory);
+    });
+
+    builder.Services.AddSingleton<IRabbitMQManager, RabbitMQManager>(sp =>
+    {
+        var subscriptionClientName = builder.Configuration["SubscriptionClientName"];
+        var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQConnection>();
+        var eventBusSubscriptionsManager = sp.GetRequiredService<IEventSubscriptionManager>();
+
+        return new RabbitMQManager(rabbitMQPersistentConnection, eventBusSubscriptionsManager, sp, subscriptionClientName);
+    });
+
+    builder.Services.AddSingleton<IEventSubscriptionManager, SubscriptionManager>();
+
+    builder.Services.AddTransient<AddedNewProductEventHandler>();
+}
+
+void ConfigureRabbitMQ(IApplicationBuilder app)
+{
+    var eventBus = app.ApplicationServices.GetRequiredService<IRabbitMQManager>();
+
+    eventBus.Subscribe<AddedNewProductEvent, AddedNewProductEventHandler>();
 }

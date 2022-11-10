@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using User.API.Model.Others;
+using User.API.Repository;
 using User.Model;
 
 namespace User.Controllers
@@ -16,12 +17,12 @@ namespace User.Controllers
     [Route("api/[controller]")]
     public class IdentityController : Controller
     {
-        private readonly UserManager<Model.User> _userManager;
+        private readonly IUserService _userRepository;
         private readonly IConfiguration Configuration;
 
-        public IdentityController(UserManager<Model.User> userManager, IConfiguration configuration)
+        public IdentityController(IUserService userRepository, IConfiguration configuration)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
             Configuration = configuration;
         }
 
@@ -41,7 +42,7 @@ namespace User.Controllers
                 UserName = userInfo.Email
             };
 
-            var result = await _userManager.CreateAsync(user, userInfo.Password);
+            var result = await _userRepository.CreateUserAsync(user, userInfo.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -51,7 +52,7 @@ namespace User.Controllers
                 return View(userInfo);
             }
 
-            await _userManager.AddToRoleAsync(user, "Customer");
+            await _userRepository.AddRoleAsync(user, "Customer");
 
             return Ok();
         }
@@ -60,14 +61,14 @@ namespace User.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> IdentityLogin([FromBody] UserLogin userLogin)
         {            
-            var user = await _userManager.FindByEmailAsync(userLogin.Email);
+            var user = await _userRepository.GetUserByEmailAsync(userLogin.Email);
             if (user != null &&
-                await _userManager.CheckPasswordAsync(user, userLogin.Password))
+                await _userRepository.CheckUserPassword(user, userLogin.Password))
             {
                 var issuer = Configuration["Jwt:Issuer"];
                 var audience = Configuration["Jwt:Audience"];
                 var key = Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]);
-                string userRole = (await _userManager.GetRolesAsync(user)).First();
+                string userRole = await _userRepository.GetSingleRoleAsync(user);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[]

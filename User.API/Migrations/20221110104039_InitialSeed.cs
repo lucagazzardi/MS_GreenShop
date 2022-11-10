@@ -180,8 +180,8 @@ namespace User.API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "780f92ba-bc4a-4603-ae82-a1371a238c11", "0a459e89-103d-4b88-be32-cf42ea719e6e", "Administrator", "ADMINISTRATOR" },
-                    { "9ae35cde-ce65-4bdd-9d05-689bac3ca7fc", "6b351a92-44ce-4a52-a411-f3e01b8ceaaf", "Customer", "CUSTOMER" }
+                    { "780f92ba-bc4a-4603-ae82-a1371a238c11", "66123aa8-7290-418a-96fd-30742796d298", "Administrator", "ADMINISTRATOR" },
+                    { "9ae35cde-ce65-4bdd-9d05-689bac3ca7fc", "dbf4255b-3201-447c-a3d2-fe48d60504af", "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.InsertData(
@@ -189,8 +189,8 @@ namespace User.API.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "398d10fe-4b8d-4606-8e9c-bd2c78d4e001", 0, "5901b8d2-9f18-44f2-8da1-a06b9b94689e", "per.mic@it.it", false, "Percorso Microservizi", false, null, "PER.MIC@IT.IT", "PER.MIC@IT.IT", "AQAAAAEAACcQAAAAEEhT6xkAmB95VSuMQXkCPxGpBMd/nHWUH1LxnbFZQIZnHJXFkCJ5KAUo1Al9qCPcGQ==", null, false, "33a7068d-6894-461d-8c32-ad399af547b8", false, "per.mic@it.it" },
-                    { "e310a6cb-6677-4aa6-93c7-2763956f7a97", 0, "4667f666-25c4-4b04-90b3-13bc15938fa9", "gazza@it.it", false, "Luca Gazzardi", false, null, "GAZZA@IT.IT", "GAZZA@IT.IT", "AQAAAAEAACcQAAAAEDFxyzeJj2dkSGJMXWBjD8K2eZcInwe7dcJRhH4aRFSknq4haKrwCN6scQmD2z1KHg==", null, false, "8f7d9f91-d43c-40da-bc4b-078eb340e56c", false, "gazza@it.it" }
+                    { "398d10fe-4b8d-4606-8e9c-bd2c78d4e001", 0, "a297352c-7262-47dd-bed7-24b4947e0d0b", "per.mic@it.it", false, "Percorso Microservizi", false, null, "PER.MIC@IT.IT", "PER.MIC@IT.IT", "AQAAAAEAACcQAAAAEJo/0pkPOJR4CInicmEPNali1RTvMqwMJ+MilVtB4naf+CVjq3nb0oFbYfXwGU1+tA==", null, false, "a0fa3182-7c74-4999-b3b8-887ce345030d", false, "per.mic@it.it" },
+                    { "e310a6cb-6677-4aa6-93c7-2763956f7a97", 0, "59b2e902-ff89-4568-bc56-319d1ccc26b1", "gazza@it.it", false, "Luca Gazzardi", false, null, "GAZZA@IT.IT", "GAZZA@IT.IT", "AQAAAAEAACcQAAAAEFjOFhLONokeFaSFYjvOyjFtkTUBXJ1Apf58W1oKE+HJKZRuhPVxpaAImUndAarnog==", null, false, "da39c54e-6c6f-405b-843e-0cc14a983235", false, "gazza@it.it" }
                 });
 
             migrationBuilder.InsertData(
@@ -208,8 +208,8 @@ namespace User.API.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "e310a6cb-6677-4aa6-93c7-2763956f7a97" },
-                    { 2, 2, "398d10fe-4b8d-4606-8e9c-bd2c78d4e001" },
-                    { 3, 1, "e310a6cb-6677-4aa6-93c7-2763956f7a97" },
+                    { 2, 1, "398d10fe-4b8d-4606-8e9c-bd2c78d4e001" },
+                    { 3, 2, "e310a6cb-6677-4aa6-93c7-2763956f7a97" },
                     { 4, 2, "398d10fe-4b8d-4606-8e9c-bd2c78d4e001" }
                 });
 

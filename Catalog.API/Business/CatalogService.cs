@@ -4,32 +4,41 @@ using Catalog.API.Data;
 using Catalog.API.Model;
 using Catalog.API.Model.Others;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using RabbitMQService.cs;
+using RabbitMQService.cs.EventsCollection;
 
 namespace Catalog.API.Business
 {
     public class CatalogService : ICatalogService
     {
         private readonly CatalogContext _catalogContext;
+        private readonly IRabbitMQManager _rabbitMQManager;
         private readonly IMapper _mapper;
 
-        public CatalogService(CatalogContext catalogContext, IMapper mapper)
+        public CatalogService(CatalogContext catalogContext, IRabbitMQManager rabbitMQManager, IMapper mapper)
         {
             _catalogContext = catalogContext;
+            _rabbitMQManager = rabbitMQManager;
             _mapper = mapper;
         }
 
         public List<Product> GetCatalog()
         {
             return _catalogContext.Products.Where(x => x.InCatalog).ToList();
-        }
-
-        
+        }        
 
         public void AddNewProduct(ProductAddEdit product)
         {
             Product newProduct = _mapper.Map<Product>(product);
             _catalogContext.Products.Add(newProduct);
             _catalogContext.SaveChanges();
+
+            Category category = _catalogContext.Categories.SingleOrDefault(x => x.ID == product.CategoryId);
+            if(category != null)
+            {
+                AddedNewProductEvent addedNewProductEvent = new AddedNewProductEvent(product.CategoryId, category.Name, product.Name);
+                _rabbitMQManager.Publish(addedNewProductEvent);
+            }
         }
 
         public void EditProduct(int productId, ProductAddEdit product)

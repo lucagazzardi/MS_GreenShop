@@ -12,7 +12,7 @@ using User.Data;
 namespace User.API.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20221106170349_InitialSeed")]
+    [Migration("20221110104039_InitialSeed")]
     partial class InitialSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,14 +54,14 @@ namespace User.API.Migrations
                         new
                         {
                             Id = "9ae35cde-ce65-4bdd-9d05-689bac3ca7fc",
-                            ConcurrencyStamp = "6b351a92-44ce-4a52-a411-f3e01b8ceaaf",
+                            ConcurrencyStamp = "dbf4255b-3201-447c-a3d2-fe48d60504af",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
                             Id = "780f92ba-bc4a-4603-ae82-a1371a238c11",
-                            ConcurrencyStamp = "0a459e89-103d-4b88-be32-cf42ea719e6e",
+                            ConcurrencyStamp = "66123aa8-7290-418a-96fd-30742796d298",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -216,13 +216,13 @@ namespace User.API.Migrations
                         new
                         {
                             ID = 2,
-                            CategoryId = 2,
+                            CategoryId = 1,
                             UserId = "398d10fe-4b8d-4606-8e9c-bd2c78d4e001"
                         },
                         new
                         {
                             ID = 3,
-                            CategoryId = 1,
+                            CategoryId = 2,
                             UserId = "e310a6cb-6677-4aa6-93c7-2763956f7a97"
                         },
                         new
@@ -306,16 +306,16 @@ namespace User.API.Migrations
                         {
                             Id = "e310a6cb-6677-4aa6-93c7-2763956f7a97",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4667f666-25c4-4b04-90b3-13bc15938fa9",
+                            ConcurrencyStamp = "59b2e902-ff89-4568-bc56-319d1ccc26b1",
                             Email = "gazza@it.it",
                             EmailConfirmed = false,
                             FullName = "Luca Gazzardi",
                             LockoutEnabled = false,
                             NormalizedEmail = "GAZZA@IT.IT",
                             NormalizedUserName = "GAZZA@IT.IT",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDFxyzeJj2dkSGJMXWBjD8K2eZcInwe7dcJRhH4aRFSknq4haKrwCN6scQmD2z1KHg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFjOFhLONokeFaSFYjvOyjFtkTUBXJ1Apf58W1oKE+HJKZRuhPVxpaAImUndAarnog==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8f7d9f91-d43c-40da-bc4b-078eb340e56c",
+                            SecurityStamp = "da39c54e-6c6f-405b-843e-0cc14a983235",
                             TwoFactorEnabled = false,
                             UserName = "gazza@it.it"
                         },
@@ -323,16 +323,16 @@ namespace User.API.Migrations
                         {
                             Id = "398d10fe-4b8d-4606-8e9c-bd2c78d4e001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5901b8d2-9f18-44f2-8da1-a06b9b94689e",
+                            ConcurrencyStamp = "a297352c-7262-47dd-bed7-24b4947e0d0b",
                             Email = "per.mic@it.it",
                             EmailConfirmed = false,
                             FullName = "Percorso Microservizi",
                             LockoutEnabled = false,
                             NormalizedEmail = "PER.MIC@IT.IT",
                             NormalizedUserName = "PER.MIC@IT.IT",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEhT6xkAmB95VSuMQXkCPxGpBMd/nHWUH1LxnbFZQIZnHJXFkCJ5KAUo1Al9qCPcGQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJo/0pkPOJR4CInicmEPNali1RTvMqwMJ+MilVtB4naf+CVjq3nb0oFbYfXwGU1+tA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33a7068d-6894-461d-8c32-ad399af547b8",
+                            SecurityStamp = "a0fa3182-7c74-4999-b3b8-887ce345030d",
                             TwoFactorEnabled = false,
                             UserName = "per.mic@it.it"
                         });
