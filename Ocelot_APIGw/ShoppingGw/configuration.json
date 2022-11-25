@@ -14,7 +14,8 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
-      }      
+      },
+      "SwaggerKey": "catalog"
     },
     {
       "DownstreamPathTemplate": "/api/catalog/product/new",
@@ -30,10 +31,11 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
-      }
+      },
+      "SwaggerKey": "catalog"
     },
     {
-      "DownstreamPathTemplate": "/api/catalog/product/edit/{productId:int}",
+      "DownstreamPathTemplate": "/api/catalog/product/edit/{productId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -41,15 +43,16 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/product/edit/{productId:int}",
+      "UpstreamPathTemplate": "/product/edit/{productId}",
       "UpstreamHttpMethod": [ "PUT" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
-      }
+      },
+      "SwaggerKey": "catalog"
     },
     {
-      "DownstreamPathTemplate": "/api/catalog/product/remove/{productId:int}",
+      "DownstreamPathTemplate": "/api/catalog/product/remove/{productId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -57,15 +60,16 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/product/remove/{productId:int}",
+      "UpstreamPathTemplate": "/product/remove/{productId}",
       "UpstreamHttpMethod": [ "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
-      }
+      },
+      "SwaggerKey": "catalog"
     },
     {
-      "DownstreamPathTemplate": "/api/catalog/product/add/{productId:int}",
+      "DownstreamPathTemplate": "/api/catalog/product/add/{productId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -73,12 +77,25 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/product/add/{productId:int}",
+      "UpstreamPathTemplate": "/product/add/{productId}",
       "UpstreamHttpMethod": [ "PUT" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
-      }
+      },
+      "SwaggerKey": "catalog"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "catalog",
+      "Config": [
+        {
+          "Name": "Catalog API",
+          "Version": "v1",
+          "Url": "http://catalog.api/swagger/v1/swagger.json"
+        }
+      ]
     }
   ],
   "GlobalConfiguration": {

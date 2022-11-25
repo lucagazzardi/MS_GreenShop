@@ -19,11 +19,13 @@ namespace User.Controllers
     {
         private readonly IUserService _userRepository;
         private readonly IConfiguration Configuration;
+        private readonly ILogger<IdentityController> _logger;
 
-        public IdentityController(IUserService userRepository, IConfiguration configuration)
+        public IdentityController(IUserService userRepository, IConfiguration configuration, ILogger<IdentityController> logger)
         {
             _userRepository = userRepository;
             Configuration = configuration;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -53,6 +55,8 @@ namespace User.Controllers
             }
 
             await _userRepository.AddRoleAsync(user, "Customer");
+
+            _logger.LogTrace($"New user {user.Email} signed up.");
 
             return Ok();
         }
@@ -88,6 +92,8 @@ namespace User.Controllers
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 var jwtToken = tokenHandler.WriteToken(token);
                 var stringToken = tokenHandler.WriteToken(token);
+
+                _logger.LogTrace($"User {user.Email} logged in.");
 
                 return Ok(stringToken);
             }

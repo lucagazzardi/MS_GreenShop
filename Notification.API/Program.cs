@@ -6,8 +6,21 @@ using RabbitMQService.cs.Infrastructure;
 using RabbitMQService.cs;
 using Notification.API.EventHandling;
 using Notification.API.Business;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .MinimumLevel.Verbose()
+  .Enrich.WithProperty("AppName", builder.Configuration["AppName"])
+  .WriteTo.File("logs/notification-.log", Serilog.Events.LogEventLevel.Verbose, builder.Configuration["SerilogOutputTemplate"], rollingInterval: RollingInterval.Day)
+  .WriteTo.Seq(builder.Configuration["SeqUrl"])
+  .Enrich.FromLogContext()
+  .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 builder.Services.Configure<NotificationSettings>(builder.Configuration.GetSection("NotificationDatabase"));
@@ -91,8 +104,10 @@ void RegisterRabbitMQ()
         var subscriptionClientName = builder.Configuration["SubscriptionClientName"];
         var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQConnection>();
         var eventBusSubscriptionsManager = sp.GetRequiredService<IEventSubscriptionManager>();
+        var logger = sp.GetRequiredService<ILogger<RabbitMQManager>>();
 
-        return new RabbitMQManager(rabbitMQPersistentConnection, eventBusSubscriptionsManager, sp, subscriptionClientName);
+
+        return new RabbitMQManager(rabbitMQPersistentConnection, eventBusSubscriptionsManager, sp, logger, subscriptionClientName);
     });
 
     builder.Services.AddSingleton<IEventSubscriptionManager, SubscriptionManager>();

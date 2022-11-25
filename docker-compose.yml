@@ -1,10 +1,10 @@
 version: '3.4'
 
 services:
-  sqluser:
-    image: "mcr.microsoft.com/mssql/server:2019-latest"
+  seq:
+    image: "datalust/seq:latest"
 
-  sqlcatalog:
+  sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
 
   mongonotificationsdata:
@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: Catalog.API/Dockerfile
     depends_on:
-     - sqlcatalog
+     - sqlserver
 
   user.api:
     image: ${DOCKER_REGISTRY-}userapi
@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: User.API/Dockerfile
     depends_on:
-      - sqluser
+      - sqlserver
 
 
   notification.api:

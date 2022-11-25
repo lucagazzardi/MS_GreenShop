@@ -14,12 +14,14 @@ namespace Catalog.API.Business
         private readonly CatalogContext _catalogContext;
         private readonly IRabbitMQManager _rabbitMQManager;
         private readonly IMapper _mapper;
+        private readonly ILogger<CatalogService> _logger;
 
-        public CatalogService(CatalogContext catalogContext, IRabbitMQManager rabbitMQManager, IMapper mapper)
+        public CatalogService(CatalogContext catalogContext, IRabbitMQManager rabbitMQManager, IMapper mapper, ILogger<CatalogService> logger)
         {
             _catalogContext = catalogContext;
             _rabbitMQManager = rabbitMQManager;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public List<Product> GetCatalog()
@@ -32,13 +34,9 @@ namespace Catalog.API.Business
             Product newProduct = _mapper.Map<Product>(product);
             _catalogContext.Products.Add(newProduct);
             _catalogContext.SaveChanges();
+            _logger.LogTrace($"Added product {newProduct.Name}");
 
-            Category category = _catalogContext.Categories.SingleOrDefault(x => x.ID == product.CategoryId);
-            if(category != null)
-            {
-                AddedNewProductEvent addedNewProductEvent = new AddedNewProductEvent(product.CategoryId, category.Name, product.Name);
-                _rabbitMQManager.Publish(addedNewProductEvent);
-            }
+            HandleCategoryPreferences(newProduct);
         }
 
         public void EditProduct(int productId, ProductAddEdit product)
@@ -49,6 +47,7 @@ namespace Catalog.API.Business
             toUpdate.Description = product.Description;
             toUpdate.Pic = product.Pic;
             toUpdate.CategoryId = product.CategoryId;
+            _logger.LogTrace($"Edited product {toUpdate.Name}");
 
             _catalogContext.Update(toUpdate);
             _catalogContext.SaveChanges();
@@ -60,6 +59,7 @@ namespace Catalog.API.Business
             product.InCatalog = false;
             _catalogContext.Update(product);
             _catalogContext.SaveChanges();
+            _logger.LogTrace($"Product {product.Name} removed from catalog");
         }
 
         public void AddToCatalog(int productId)
@@ -70,6 +70,7 @@ namespace Catalog.API.Business
                 product.InCatalog = true;
                 _catalogContext.Update(product);
                 _catalogContext.SaveChanges();
+                _logger.LogTrace($"Product {product.Name} added to catalog");
             }
         }
 
@@ -87,9 +88,12 @@ namespace Catalog.API.Business
 
         private void HandleCategoryPreferences(Product product)
         {
-            var categoryToCheck = _catalogContext.Categories.Single(x => x.ID == product.CategoryId);
-
-            //TODO: Enqueue Rabbit MQ for user notification
+            Category category = _catalogContext.Categories.SingleOrDefault(x => x.ID == product.CategoryId);
+            if (category != null)
+            {
+                AddedNewProductEvent addedNewProductEvent = new AddedNewProductEvent(product.CategoryId, category.Name, product.Name);
+                _rabbitMQManager.Publish(addedNewProductEvent);
+            }
         }
 
         #endregion

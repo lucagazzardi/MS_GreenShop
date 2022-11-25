@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -11,7 +12,12 @@ IConfiguration configuration = new ConfigurationBuilder()
                             .AddJsonFile(builder.Configuration.GetValue<string>("ConfigPath"))
                             .Build();
 
+//builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers();
+//builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOcelot(configuration);
+builder.Services.AddSwaggerForOcelot(configuration);
 
 var authenticationProviderKey = "IdentityApiKey";
 
@@ -41,8 +47,16 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseOcelot();
+//app.UseSwagger();
+//app.UseSwaggerUI();
 
-app.MapGet("/", () => "Hello World!");
+app.UseSwaggerForOcelotUI(opt =>
+{
+    opt.PathToSwaggerGenerator = "/swagger/docs";
+});
+
+app.MapControllers();
+
+await app.UseOcelot();
 
 app.Run();
