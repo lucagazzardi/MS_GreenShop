@@ -3,4 +3,9 @@ Reti Microservices course
 
 # To Install
 
-Clone the repository, from terminal use docker-compose build and docker-compose up
+Clone the repository and then from terminal: 
+
+````
+docker-compose build
+docker-compose up 
+````
