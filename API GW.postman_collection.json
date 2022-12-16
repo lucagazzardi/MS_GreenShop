@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "63bdf9c2-b06a-450b-a47b-0e1342f9311b",
+		"name": "API GW",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4246607"
+	},
+	"item": [
+		{
+			"name": "Identity",
+			"item": [
+				{
+					"name": "Register New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FullName\": \"Nuovo Utente\",\r\n    \"Email\": \"nuovo.u@it.it\",\r\n    \"Password\": \"Pass@word\",\r\n    \"ConfirmPassword\": \"Pass@word\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5201/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5201",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"gazza@it.it\",\r\n    \"Password\": \"Pass@word\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5201/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5201",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Catalog",
+			"item": [
+				{
+					"name": "List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5202/catalog",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5202",
+							"path": [
+								"catalog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"Name\": \"Pianta grassa\",\r\n    \"Description\": \"Proprio obesa\",\r\n    \"CategoryId\": 1,\r\n    \"InCatalog\": true,\r\n    \"Pic\": \"https://www.shopitalia.market/images/thumbs/0225083_pianta-grassa-in-vaso-da-10cm-1-pezzo-altezza-25-30-cm.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5202/product/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5202",
+							"path": [
+								"product",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Margherita modifica\",\r\n    \"Description\": \"Una bellissima margherita modificata\",\r\n    \"CategoryId\": 1,\r\n    \"InCatalog\": true,\r\n    \"Pic\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Fleur_en_Vanoise_%2821%29.JPG/1280px-Fleur_en_Vanoise_%2821%29.JPG\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5202/product/edit/:productId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5202",
+							"path": [
+								"product",
+								"edit",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove From Catalog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5202/product/remove/:productId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5202",
+							"path": [
+								"product",
+								"remove",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add To Catalog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5202/product/add/:productId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5202",
+							"path": [
+								"product",
+								"add",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
