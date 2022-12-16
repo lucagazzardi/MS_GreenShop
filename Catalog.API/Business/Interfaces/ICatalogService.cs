@@ -10,5 +10,7 @@ namespace Catalog.API.Business.Interfaces
         void EditProduct(int productId, ProductAddEdit product);
         void RemoveFromCatalog(int productId);
         void AddToCatalog(int productId);
+        void AddCategory(string name);
+        List<Category> GetCategories();
     }
 }

@@ -84,6 +84,40 @@
         "AllowedScopes": []
       },
       "SwaggerKey": "catalog"
+    },
+    {
+      "DownstreamPathTemplate": "/api/catalog/category/list",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/category/list",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
+      "SwaggerKey": "catalog"
+    },
+    {
+      "DownstreamPathTemplate": "/api/catalog/category/add/{name}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/category/add/{name}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
+      "SwaggerKey": "catalog"
     }
   ],
   "SwaggerEndPoints": [

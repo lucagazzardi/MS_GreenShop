@@ -74,6 +74,21 @@ namespace Catalog.API.Business
             }
         }
 
+        public void AddCategory(string name)
+        {
+            bool alreadyExists = _catalogContext.Categories.Any(x => x.Name == name);
+            if (!alreadyExists)
+            {
+                _catalogContext.Categories.Add(new Category() { Name = name });
+                _catalogContext.SaveChanges();
+            }
+        }
+
+        public List<Category> GetCategories()
+        {
+            return _catalogContext.Categories.ToList();
+        }
+
         #region Private
 
         private Product GetProductById(int productId)

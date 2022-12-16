@@ -56,5 +56,16 @@ namespace User.API.Repository
             return emails;
         }
 
+        public void AddNewPreference(string userId, int categoryId)
+        {
+            CategoryPreference categoryPreference = new CategoryPreference()
+            {
+                UserId = userId.ToString(),
+                CategoryId = categoryId
+            };
+            _userContext.CategoryPreferences.Add(categoryPreference);
+            _userContext.SaveChanges();
+        }
+
     }
 }

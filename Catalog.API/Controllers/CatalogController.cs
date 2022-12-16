@@ -56,5 +56,20 @@ namespace Catalog.API.Controllers
             _catalogService.AddToCatalog(productId);
             return Ok();
         }
+
+        [Authorize(Roles = "Customer, Administrator")]
+        [HttpGet("category/list")]
+        public IActionResult GetCategories()
+        {
+            return Ok(_catalogService.GetCategories());
+        }
+
+        [Authorize(Roles = "Customer, Administrator")]
+        [HttpPost("category/add/{name}")]
+        public IActionResult AddNewCategory(string name)
+        {
+            _catalogService.AddCategory(name);
+            return Ok();
+        }
     }
 }

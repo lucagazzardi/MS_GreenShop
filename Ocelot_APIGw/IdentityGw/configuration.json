@@ -25,6 +25,19 @@
       "UpstreamPathTemplate": "/login",
       "UpstreamHttpMethod": [ "POST" ],
       "SwaggerKey": "user"
+    },
+    {
+      "DownstreamPathTemplate": "/api/utility/category/preference/{categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/category/preference/{categoryId}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "user"
     }
   ],
   "SwaggerEndPoints": [

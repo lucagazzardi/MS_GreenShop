@@ -12,6 +12,6 @@ namespace User.API.Repository
 
         Task<Dictionary<string, string>> GetEmailsToNotify(int categoryId);
 
-
+        void AddNewPreference(string userId, int categoryId);
     }
 }
